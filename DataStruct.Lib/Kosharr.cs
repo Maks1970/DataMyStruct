@@ -5,34 +5,35 @@ namespace DataStruct.Lib
     public class Kosharr
     {
         //  List<int> df ;
-        private int count = 0 ;
+        private int count = 0;
         private object[] InnerArray;
 
         public Kosharr(params object[] obj)
         {
-            InnerArray = obj ;
+            InnerArray = obj;
             foreach (object o in InnerArray)
             {
                 count++;
             }
         }
 
-        public int Count() {
-            
+        public int Count()
+        {
+
             return count;
         }
         public object this[int index]
         {
-            get => InnerArray [index];     // Читання значення за індексом
+            get => InnerArray[index];     // Читання значення за індексом
             set => InnerArray[index] = value; // Запис значення за індексом
         }
 
-        public void Add(object obj) 
+        public void Add(object obj)
         {
-             object[] TempInnerArray = new object[count+1];
+            object[] TempInnerArray = new object[count + 1];
             for (int i = 0; i < count; i++)
             {
-                TempInnerArray [i] = InnerArray[i];
+                TempInnerArray[i] = InnerArray[i];
             }
             TempInnerArray[count] = obj;
             //TempInnerArray[count]=obj;
