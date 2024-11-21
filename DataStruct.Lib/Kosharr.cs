@@ -34,7 +34,7 @@ namespace DataStruct.Lib
             {
                 TempInnerArray [i] = InnerArray[i];
             }
-            TempInnerArray[count] = obj;
+            TempInnerArray[count] = obj;  
             //TempInnerArray[count]=obj;
             InnerArray = TempInnerArray;
             count++;
