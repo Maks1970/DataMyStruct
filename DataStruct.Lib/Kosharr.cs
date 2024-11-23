@@ -1,31 +1,28 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace DataStruct.Lib
 {
     public class Kosharr
     {
-        //  List<int> df ;
-        private int count = 0;
-        private object[] InnerArray;
 
+        private object[] _innerArray;
+        public int count { get; private set; }
+        public int countR { get; private set; }
         public Kosharr(params object[] obj)
         {
-            InnerArray = obj;
-            foreach (object o in InnerArray)
+            _innerArray = obj;
+            foreach (object o in _innerArray)
             {
                 count++;
             }
         }
 
-        public int Count()
-        {
 
-            return count;
-        }
         public object this[int index]
         {
-            get => InnerArray[index];     // Читання значення за індексом
-            set => InnerArray[index] = value; // Запис значення за індексом
+            get => _innerArray[index];     // Читання значення за індексом
+            set => _innerArray[index] = value; // Запис значення за індексом
         }
 
         public void Add(object obj)
@@ -33,34 +30,66 @@ namespace DataStruct.Lib
             object[] TempInnerArray = new object[count + 1];
             for (int i = 0; i < count; i++)
             {
-                TempInnerArray[i] = InnerArray[i];
+                TempInnerArray[i] = _innerArray[i];
             }
             TempInnerArray[count] = obj;
-            //TempInnerArray[count]=obj;
-            InnerArray = TempInnerArray;
+            _innerArray = TempInnerArray;
             count++;
-
-
         }
-        //public Kosharr(params object [] obj ) 
-        //{
-        //    foreach (object o in obj) 
-        //    { 
-        //    count++;
-        //    }
 
-        //   for (int i = 0; i < count; i++) 
-        //    {
-        //        InnerArray[i]=obj[i];
-        //    }
-        //}
-        // object[] _innerArray = new object[count];
+        public void Insert(int num, object obj)
+        {
+            _innerArray[num - 1] = obj;
+        }
 
+        public bool RemoveAt(int num)
+        {
+            return true;
+        } 
+        public bool Remove(object obj)
+        {
+            bool rem = false;
+            object[] tempInnerArray = new object[count];
+            int index = -1;
+            countR = count - 1;
+            foreach (object o in _innerArray) 
+            {
+                index++;
+                if (o.Equals(obj)&& rem==false)
+                {
+                    
+                    rem = true;
+                    break;
+                }
+              
+            }
+            for (int i = 0;i< countR; i++)
+            {
+                if (index == i && rem == true)
+                {
+                    tempInnerArray[i] = _innerArray[i + 1];
+                }
+                else
+                {
+                    if (i< index)
+                    {
+                        tempInnerArray[i] = _innerArray[i];
+                    }
+                    else
+                    {
+                        tempInnerArray[i] = _innerArray[i+1];
+                    } 
 
+                }
+                
+            }
 
-        //public int Count() {  return count ; }
-        //return count > 0 ? count : 0; }
+            countR = count - countR;
+            count = count - countR;
+            countR = count + countR; 
+            _innerArray = tempInnerArray;
+            return rem;
+        }
 
-        // private object[] _innerArray = new object[1]; 
     }
 }
