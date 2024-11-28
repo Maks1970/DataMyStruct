@@ -7,17 +7,15 @@ namespace DataStruct.Lib
     {
 
         private object[] _innerArray;
-        public int _count { get; private set; }
-        // public int countR { get; private set; }
+        public int Count { get; private set; }
 
         public Kosharr(params object[] obj)
         {
             _innerArray = obj;
-            foreach (object o in _innerArray)
+            foreach (object o in _innerArray) 
             {
-                _count++;
+                Count++;
             }
-            //countR = count;
         }
 
 
@@ -29,30 +27,48 @@ namespace DataStruct.Lib
 
         public void Add(object obj)
         {
-            object[] TempInnerArray = new object[_count + 1];
-            for (int i = 0; i < _count; i++)
+            object[] TempInnerArray = new object[Count + 1];
+            for (int i = 0; i < Count; i++)
             {
                 TempInnerArray[i] = _innerArray[i];
             }
-            TempInnerArray[_count] = obj;
+            TempInnerArray[Count] = obj;
             _innerArray = TempInnerArray;
-            _count++;
-
+            Count++;
         }
 
         public void Insert(int num, object obj)
         {
-            _innerArray[num - 1] = obj;
+            object ob;
+            Count++;
+            object[] tempInnerArray = new object[Count];
+            for (int i = 0; i < Count; i++)
+            {
+                if(i < num)
+                {
+                    tempInnerArray[i] = _innerArray[i];
+                }
+                else if (i == num)
+                {
+                    ob = _innerArray[i];
+                    tempInnerArray[i] = obj;
+                  //  i++;
+                }
+                else if (i > num)
+                {
+                    tempInnerArray[i] = _innerArray[i-1];
+                }
+            }
+            _innerArray = tempInnerArray;
         }
-
 
         public bool Remove(object obj)
         {
             bool rem = false;
-            int countR = _count;
-            object[] tempInnerArray = new object[_count];
+            int countR = Count;
+            object[] tempInnerArray = new object[Count];
             int index = -1;
-            countR = _count - 1;
+            countR = Count - 1;
             foreach (object o in _innerArray)
             {
                 index++;
@@ -85,9 +101,9 @@ namespace DataStruct.Lib
 
             }
 
-            countR = _count - countR;
-            _count = _count - countR;
-            countR = _count + countR;
+            countR = Count - countR;
+            Count = Count - countR;
+            countR = Count + countR;
             _innerArray = tempInnerArray;
             return rem;
         }
@@ -95,10 +111,10 @@ namespace DataStruct.Lib
         public bool RemoveAt(int num)
         {
             bool rem = false;
-            int countR = _count;
-            object[] tempInnerArray = new object[_count];
+            int countR = Count;
+            object[] tempInnerArray = new object[Count];
             int index = num - 1;
-            countR = _count - 1;
+            countR = Count - 1;
             for (int i = 0; i < countR; i++)
             {
                 if (index == i && rem == false)
@@ -121,21 +137,21 @@ namespace DataStruct.Lib
 
             }
 
-            countR = _count - countR;
-            _count = _count - countR;
-            countR = _count + countR;
+            countR = Count - countR;
+            Count = Count - countR;
+            countR = Count + countR;
             _innerArray = tempInnerArray;
             return rem;
         }
 
         void Clear()
         {
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 _innerArray[i] = null;
             }
 
-            _count = 0;
+            Count = 0;
         }
 
         public bool Contains(object obj)
@@ -167,7 +183,7 @@ namespace DataStruct.Lib
         public void Reverse() 
         {
             int left = 0;
-            int right = _count - 1;
+            int right = Count - 1;
             while (left < right)
             {
                 object temp = _innerArray[left];
