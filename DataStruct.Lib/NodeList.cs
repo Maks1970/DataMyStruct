@@ -7,12 +7,12 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
-    public class NodeLis
+    public class NodeList
     {
-        public object Data { get; set; } 
-        public NodeLis Next { get; set; } 
+        public object Data { get ;} 
+        public NodeList Next { get; set; } 
 
-        public NodeLis(object data)
+        public NodeList(object data)
         {
             Data = data;
             Next = null;

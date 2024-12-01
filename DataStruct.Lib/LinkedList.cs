@@ -8,88 +8,92 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
- 
-
-
-    public class LinkedKosh
+    public class LinkedList
     {
-        public  NodeLis Head;
-        public NodeLis? First   { get; protected set; }
-        public NodeLis? Last { get; protected set; }
+        public NodeList Head;
 
-        public int Count {  get; private set; }
-        public LinkedKosh()
+        public object? First
+        {
+            get => Head?.Data;  // Повертає значення (Data) першої ноди, якщо вона є
+
+        }
+        public object? Last
+        {
+            get => Tail?.Data;  // Повертає значення (Data) першої ноди, якщо вона є
+
+        }
+
+        public NodeList? Tail { get; protected set; }
+
+        public   int Count {  get; protected set; }
+        public LinkedList()
         {
             Count = 0;
             Head = null;
         }
-        public LinkedKosh(params object[] obj)
+        public LinkedList(params object[] item)
         {
             Count = 0;
-            foreach (object o in obj) 
+            foreach (object o in item) 
             {
                 Add(o);
-                Count++;
             }
         }
 
-        public void AddFirst(object obj)
+        public virtual void AddFirst(object item)
         {
-            NodeLis newNode = new NodeLis(obj);
-            NodeLis headNode = Head;
+            NodeList newNode = new NodeList(item);
+            NodeList headNode = Head;
             if (Head != newNode)
             {
-                
                 newNode.Next = headNode;
                 Head = newNode;
-                
-                First = newNode;
             }
             else
             {
-                NodeLis currentNode = Head;
+                NodeList currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
                 }
                 currentNode.Next = newNode;
-                Last = currentNode.Next;
+                Tail = currentNode.Next;
             }
             Count++;
         }
-        public void Add(object obj)
+        public virtual void Add(object item)
         {
-            NodeLis newNode = new NodeLis(obj);
+            NodeList newNode = new NodeList(item);
             if(Head == null)
             {
                 Head = newNode;
-                First = newNode;
             }
             else
             {
-                NodeLis  currentNode = Head;
+                NodeList  currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
                 }
                 currentNode.Next = newNode;
-                Last = currentNode.Next;
+                Tail = currentNode.Next;
             }
-            
+            Count++;
+
         }
         
-        public void Insert(int index, object obj)
+        public  void Insert(int index, object item)
         {
             int i = 0;
             Count++;
-            NodeLis newNode = new NodeLis(obj);
+            NodeList newNode = new NodeList(item);
             if (Head == null)
             {
                 Head = newNode;
             }
             else
             {
-                NodeLis currentNode = Head;
+                NodeList currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     
@@ -108,24 +112,18 @@ namespace DataStruct.Lib
 
         public void Clear()
         {
-            NodeLis current = Head;
-            while (current != null)
-            {
-                NodeLis next = current.Next; 
-                current.Next = null;                     
-                current = next;                           
-            }
-            Head = null;
+            Head = Tail = null;
             Count = 0;
+
         }
 
-        public bool Contains(object obj)
+        public bool Contains(object item)
         {
 
-            NodeLis current = Head;
+            NodeList current = Head;
             while (current != null)
             {
-                if(current.Data.Equals(obj))
+                if(current.Data.Equals(item))
                 {
                     return true;
                 }
@@ -137,26 +135,26 @@ namespace DataStruct.Lib
 
         public object[] ToArray()
         {
-            //object[] mas;//= new object[Count];
-            Kosharr mas = new Kosharr();
-            NodeLis current = Head;
+            NodeList current = Head;
+            object[] result = new object[Count];
+            current = Head;
+            int index = 0;
+
+            // Заповнюємо масив елементами
             while (current != null)
             {
-                mas.Add(current.Data);
+                result[index++] = current.Data;
                 current = current.Next;
             }
-            //for (int i = 0;i<Count; i++)
-            //{
-            //    mas[i] = Get(i);
-            //}
-            return mas.ToArray();
+
+            return result;
         }
         public object Get(int index)
         {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("Index must be non-negative");
 
-            NodeLis current = Head;
+            NodeList current = Head;
             int currentIndex = 0;
             while (current != null)
             {
