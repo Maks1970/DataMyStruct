@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataStruct.Lib\DataStruct.Lib.csproj" />
-    <ProjectReference Include="..\Interfaces_List\Interfaces_List.csproj" />
+    <ProjectReference Include="..\Interfaces_List1\Interfaces_List.csproj" />
   </ItemGroup>
 
 </Project>

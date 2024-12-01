@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Interfaces_List;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 
 namespace DataStruct.Lib
 {
-    public class ListKosh
+
+    public class ListKosh : IMyList
     {
         private object[] _innerArray;
         public int Count { get; private set; }
@@ -115,7 +117,7 @@ namespace DataStruct.Lib
             return true;
         }
 
-        void Clear()
+        public void Clear()
         {
             for (int i = 0; i < Count; i++)
             {
