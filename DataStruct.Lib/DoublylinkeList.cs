@@ -1,18 +1,19 @@
-﻿using System.Xml.Linq;
+﻿using Interfaces_List;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataStruct.Lib
 {
-    public class NodeDublyList:NodeList
+    public class NodeDublyList : NodeList, IDoublyLinkedNode
     {
-        public NodeDublyList? Previous { get; set; }
+        public IDoublyLinkedNode? Previous { get; set; }
         public NodeDublyList(object data) : base(data)
         {
             Previous = null;
         }
     }
 
-    public class DoublylinkeList : LinkedList
+    public class DoublylinkeList : LinkedList, IDoublyLinkedList
     {
         public object? First
         {
@@ -20,7 +21,7 @@ namespace DataStruct.Lib
 
         }
 
-        private NodeDublyList? tail;
+        private IDoublyLinkedNode? tail;
 
         public DoublylinkeList() : base()
         {
@@ -84,8 +85,8 @@ namespace DataStruct.Lib
 
         public  void Remove(object obj)
         {
-            NodeDublyList? previous, next;
-            NodeDublyList current = (NodeDublyList)Head;
+            IDoublyLinkedNode? previous, next;
+            IDoublyLinkedNode current = (NodeDublyList)Head;
             while (!current.Data.Equals(obj))
             {
                 current = (NodeDublyList)current.Next;

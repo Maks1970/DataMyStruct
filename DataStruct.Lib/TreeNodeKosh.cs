@@ -1,17 +1,18 @@
-﻿using static DataStruct.Lib.BinaryTreeNodeKosh;
+﻿using Interfaces_List;
+using static DataStruct.Lib.BinaryTreeNodeKosh;
 
 namespace DataStruct.Lib
 {
-    public class TreeNodeKosh
+    public class TreeNodeKosh : ITreeNodeKosh
     {
         public int Data { get;}
-        public TreeNodeKosh left { get; set; }
-        public TreeNodeKosh right { get; set; }
+        public ITreeNodeKosh Left { get; set; }
+        public ITreeNodeKosh Right { get; set; }
         public TreeNodeKosh(int value)
         {
             Data = value;
-            left = null;
-            right = null;
+            Left = null;
+            Right = null;
         }
     }
 }

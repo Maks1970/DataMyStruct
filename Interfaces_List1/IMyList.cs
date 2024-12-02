@@ -17,6 +17,5 @@ namespace Interfaces_List
         bool RemoveAt(int index);
         int IndexOf(object item);
         void Reverse();
-        void Clear();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces_List;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +8,10 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
-    public class NodeList
+    public class NodeList : ILinkedNode
     {
         public object Data { get ;} 
-        public NodeList Next { get; set; } 
+        public ILinkedNode Next { get; set; } 
 
         public NodeList(object data)
         {

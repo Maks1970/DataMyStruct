@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces_List;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -9,9 +10,9 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
-    public class BinaryTreeNodeKosh
+    public class BinaryTreeNodeKosh : IBinaryTree
     {
-        private TreeNodeKosh root { get;  set; }
+        public ITreeNodeKosh root { get;  set; }
         public int Root => root?.Data ?? 0;
         public int Count { get; private set; }
         public BinaryTreeNodeKosh(params int[] obj)
@@ -30,17 +31,22 @@ namespace DataStruct.Lib
             Count = 0;
         }
 
-        public void Add(int value)
+        public void Add(object value)
         {
-            root = InnerAdd(root, value);
-            Count++;
+
+            if(value is int item)
+            {
+                root = InnerAdd(root, item);
+                Count++;
+            }
+            
         }
 
-        private TreeNodeKosh InnerAdd(TreeNodeKosh node, int value)
+        private ITreeNodeKosh InnerAdd(ITreeNodeKosh node, int value)
         {
             if (node == null)
             {
-                node = new TreeNodeKosh(value);
+               node = new TreeNodeKosh(value);
                 return node;
             }
             if (value == node.Data)
@@ -50,44 +56,49 @@ namespace DataStruct.Lib
             }
             if (value < node.Data)
             {
-                node.left = InnerAdd(node.left, value);
+                node.Left = InnerAdd(node.Left, value);
             }
             else if (value > node.Data)
             {
-                node.right = InnerAdd(node.right, value);
+                node.Right = InnerAdd(node.Right, value);
             }
             return node;
         }
 
-        public bool Contains(int value)
+        public bool Contains(object value)
         {
-            return ContainsRec(root, value);
+            if (value is int item) // Переводимо object до int
+            {
+                return ContainsRec(root, item);
+            }
+            else return false;
+            //return ContainsRec(root, value);
         }
 
-        private bool ContainsRec(TreeNodeKosh node, int value)
+        private bool ContainsRec(ITreeNodeKosh node, int value)
         {
             if (node == null) return false;
             if (node.Data == value) return true;
-            return value < node.Data ? ContainsRec(node.left, value) : ContainsRec(node.right, value);
+            return value < node.Data ? ContainsRec(node.Left, value) : ContainsRec(node.Right, value);
         }
         public void Clear()
         { 
             root = null;
         }
-        public int[] ToArray()
+        public object[] ToArray()
         {
-            int[] mas = new int[Count];  
+            object[] mas = new object[Count];  
             int currentIndex = 0; 
             PreOrderTraversalRec(root, mas, ref currentIndex);
             return mas;
         }
-        private void PreOrderTraversalRec(TreeNodeKosh node, int[] mas, ref int currentIndex)
+        private void PreOrderTraversalRec(ITreeNodeKosh node, object[] mas, ref int currentIndex)
         {
             if (node != null)
             {
                 mas[currentIndex++] = node.Data;
-                PreOrderTraversalRec(node.left, mas, ref currentIndex);
-                PreOrderTraversalRec(node.right, mas, ref currentIndex);
+                PreOrderTraversalRec(node.Left, mas, ref currentIndex);
+                PreOrderTraversalRec(node.Right, mas, ref currentIndex);
             }
         }
 

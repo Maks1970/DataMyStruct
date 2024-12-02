@@ -32,7 +32,6 @@ namespace DataStruct.Tests
             Console.WriteLine("DoublylinkeList");
 
             var koshDoublyLinkedList = new DoublylinkeList(1, 2, 3, 4, 5);
-            koshDoublyLinkedList.Insert(1, 0);
             koshDoublyLinkedList.Add(2);
             koshDoublyLinkedList.AddFirst(2);
             bool contkoshDoublyLinkedList = koshDoublyLinkedList.Contains(3);
@@ -43,7 +42,7 @@ namespace DataStruct.Tests
 
             Console.WriteLine("BinaryTreeNodeKosh");
 
-            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh(1, 4, 5, 6);
+            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh(5, 3, 4, 6);
             koshBinaryTreeNodeKosh.Add(2);
             bool contBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Contains(4);
             var toArrkoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.ToArray();

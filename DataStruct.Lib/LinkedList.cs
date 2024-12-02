@@ -5,12 +5,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Interfaces_List;
 
 namespace DataStruct.Lib
 {
-    public class LinkedList
+    public class LinkedList : IMyLinkedList
     {
-        public NodeList Head;
+        public ILinkedNode Head;
+        public ILinkedNode? Tail { get; protected set; }
 
         public object? First
         {
@@ -23,7 +25,7 @@ namespace DataStruct.Lib
 
         }
 
-        public NodeList? Tail { get; protected set; }
+        
 
         public   int Count {  get; protected set; }
         public LinkedList()
@@ -42,8 +44,8 @@ namespace DataStruct.Lib
 
         public virtual void AddFirst(object item)
         {
-            NodeList newNode = new NodeList(item);
-            NodeList headNode = Head;
+            ILinkedNode newNode = new NodeList(item);
+            ILinkedNode headNode = Head;
             if (Head != newNode)
             {
                 newNode.Next = headNode;
@@ -51,7 +53,7 @@ namespace DataStruct.Lib
             }
             else
             {
-                NodeList currentNode = Head;
+                ILinkedNode currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
@@ -63,14 +65,14 @@ namespace DataStruct.Lib
         }
         public virtual void Add(object item)
         {
-            NodeList newNode = new NodeList(item);
+            ILinkedNode newNode = new NodeList(item);
             if(Head == null)
             {
                 Head = newNode;
             }
             else
             {
-                NodeList  currentNode = Head;
+                ILinkedNode  currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
@@ -86,14 +88,14 @@ namespace DataStruct.Lib
         {
             int i = 0;
             Count++;
-            NodeList newNode = new NodeList(item);
+            ILinkedNode newNode = new NodeList(item);
             if (Head == null)
             {
                 Head = newNode;
             }
             else
             {
-                NodeList currentNode = Head;
+                ILinkedNode currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     
@@ -120,7 +122,7 @@ namespace DataStruct.Lib
         public bool Contains(object item)
         {
 
-            NodeList current = Head;
+            ILinkedNode current = Head;
             while (current != null)
             {
                 if(current.Data.Equals(item))
@@ -135,7 +137,7 @@ namespace DataStruct.Lib
 
         public object[] ToArray()
         {
-            NodeList current = Head;
+            ILinkedNode current = Head;
             object[] result = new object[Count];
             current = Head;
             int index = 0;
@@ -154,7 +156,7 @@ namespace DataStruct.Lib
             if (index < 0)
                 throw new ArgumentOutOfRangeException("Index must be non-negative");
 
-            NodeList current = Head;
+            ILinkedNode current = Head;
             int currentIndex = 0;
             while (current != null)
             {
