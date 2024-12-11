@@ -13,7 +13,6 @@ namespace Interfaces_List
 
     public interface IDoublyLinkedList : IMyLinkedList
     {
-        //public IDoublyLinkedNode? Previous { get; set; }
         void Remove(object obj);
         public void RemoveFirst();
         public void RemoveLast();

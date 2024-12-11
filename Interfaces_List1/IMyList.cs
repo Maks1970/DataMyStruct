@@ -9,7 +9,6 @@ namespace Interfaces_List
 {
     public interface IMyList : IMyCollection
     {
-        //int Capacity { get; set; }
         object this[int index] { get; set; }
 
         void Insert(int index, object item);
