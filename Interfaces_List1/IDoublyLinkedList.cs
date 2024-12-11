@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Interfaces_List
 {
-    public interface IDoublyLinkedNode : ILinkedNode
+    public interface IDoublyLinkedNode<T> : ILinkedNode<T>
     {
-        public IDoublyLinkedNode? Previous { get; set; }
+        public IDoublyLinkedNode<T>? Previous { get; set; }
     }
 
-    public interface IDoublyLinkedList : IMyLinkedList
+    public interface IDoublyLinkedList<T> : IMyLinkedList<T>
     {
-        void Remove(object obj);
+        void Remove(T obj);
         public void RemoveFirst();
         public void RemoveLast();
 

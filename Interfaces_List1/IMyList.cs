@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Interfaces_List
 {
-    public interface IMyList : IMyCollection
+    public interface IMyList <T> : IMyCollection<T>
     {
-        object this[int index] { get; set; }
+        T this[int index] { get; set; }
 
-        void Insert(int index, object item);
-        bool Remove(object item);
+        void Insert(int index, T item);
+        bool Remove(T item);
         bool RemoveAt(int index);
-        int IndexOf(object item);
+        int IndexOf(T item);
         void Reverse();
     }
 }

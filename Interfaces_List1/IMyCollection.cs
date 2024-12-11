@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Interfaces_List
 {
-    public interface IMyCollection
+    public interface IMyCollection<T>
     {
         int Count { get; }
-        void Add(object item);
-        bool Contains(object item);
+        void Add(T item);
+        bool Contains(T item);
         void Clear();
-        object[] ToArray();
+        T[] ToArray();
     }
 }

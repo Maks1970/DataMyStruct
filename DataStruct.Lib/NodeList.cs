@@ -8,12 +8,12 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
-    public class NodeList : ILinkedNode
+    public class NodeList<T> : ILinkedNode<T>
     {
-        public object Data { get ;} 
-        public ILinkedNode Next { get; set; } 
+        public T Data { get ;} 
+        public ILinkedNode<T> Next { get; set; } 
 
-        public NodeList(object data)
+        public NodeList(T data)
         {
             Data = data;
             Next = null;

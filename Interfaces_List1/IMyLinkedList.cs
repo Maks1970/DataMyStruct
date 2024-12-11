@@ -9,17 +9,17 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Interfaces_List
 {
 
-    public interface ILinkedNode
+    public interface ILinkedNode<T>
     { 
-        object Data {  get; }
-        ILinkedNode Next { get; set; } 
+        T Data { get; }
+        ILinkedNode<T> Next { get; set; } 
     }
-    public interface IMyLinkedList : IMyCollection
+    public interface IMyLinkedList<T> : IMyCollection<T>
     {
-        public object? First { get; }
-        public object? Last { get; }
-        void AddFirst(object item);
-        void Insert(int index, object item);
+        public T? First { get; }
+        public T? Last { get; }
+        void AddFirst(T item);
+        void Insert(int index, T item);
 
 
     }

@@ -9,43 +9,43 @@ using Interfaces_List;
 
 namespace DataStruct.Lib
 {
-    public class LinkedList : IMyLinkedList
+    public class LinkedListKosh<T> : IMyLinkedList<T>
     {
-        public ILinkedNode Head;
-        public ILinkedNode? Tail { get; protected set; }
+        public ILinkedNode<T> Head;
+        public ILinkedNode<T>? Tail { get; protected set; }
 
-        public object? First
+        public T? First
         {
-            get => Head?.Data;  // Повертає значення (Data) першої ноди, якщо вона є
+            get => Head.Data;  // Повертає значення (Data) першої ноди, якщо вона є
 
         }
-        public object? Last
+        public T? Last
         {
-            get => Tail?.Data;  // Повертає значення (Data) першої ноди, якщо вона є
+            get => Tail.Data;  // Повертає значення (Data) першої ноди, якщо вона є
 
         }
 
         
 
-        public   int Count {  get; protected set; }
-        public LinkedList()
+        public int Count {  get; protected set; }
+        public LinkedListKosh()
         {
             Count = 0;
             Head = null;
         }
-        public LinkedList(params object[] item)
+        public LinkedListKosh(params T[] item)
         {
             Count = 0;
-            foreach (object o in item) 
+            foreach (T o in item) 
             {
                 Add(o);
             }
         }
 
-        public virtual void AddFirst(object item)
+        public virtual void AddFirst(T item)
         {
-            ILinkedNode newNode = new NodeList(item);
-            ILinkedNode headNode = Head;
+            ILinkedNode<T> newNode = new NodeList<T>(item);
+            ILinkedNode<T> headNode = Head;
             if (Head != newNode)
             {
                 newNode.Next = headNode;
@@ -53,7 +53,7 @@ namespace DataStruct.Lib
             }
             else
             {
-                ILinkedNode currentNode = Head;
+                ILinkedNode<T> currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
@@ -63,16 +63,16 @@ namespace DataStruct.Lib
             }
             Count++;
         }
-        public virtual void Add(object item)
+        public virtual void Add(T item)
         {
-            ILinkedNode newNode = new NodeList(item);
+            ILinkedNode<T> newNode = new NodeList<T>(item);
             if(Head == null)
             {
                 Head = newNode;
             }
             else
             {
-                ILinkedNode  currentNode = Head;
+                ILinkedNode<T> currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     currentNode = currentNode.Next;
@@ -84,18 +84,18 @@ namespace DataStruct.Lib
 
         }
         
-        public  void Insert(int index, object item)
+        public  void Insert(int index, T item)
         {
             int i = 0;
             Count++;
-            ILinkedNode newNode = new NodeList(item);
+            ILinkedNode<T> newNode = new NodeList<T>(item);
             if (Head == null)
             {
                 Head = newNode;
             }
             else
             {
-                ILinkedNode currentNode = Head;
+                ILinkedNode<T> currentNode = Head;
                 while (currentNode.Next != null)
                 {
                     
@@ -119,10 +119,10 @@ namespace DataStruct.Lib
 
         }
 
-        public bool Contains(object item)
+        public bool Contains(T item)
         {
 
-            ILinkedNode current = Head;
+            ILinkedNode<T> current = Head;
             while (current != null)
             {
                 if(current.Data.Equals(item))
@@ -135,10 +135,10 @@ namespace DataStruct.Lib
             return false;
         }
 
-        public object[] ToArray()
+        public T[] ToArray()
         {
-            ILinkedNode current = Head;
-            object[] result = new object[Count];
+            ILinkedNode<T> current = Head;
+            T[] result = new T[Count];
             current = Head;
             int index = 0;
 
@@ -151,12 +151,12 @@ namespace DataStruct.Lib
 
             return result;
         }
-        public object Get(int index)
+        public T Get(int index)
         {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("Index must be non-negative");
 
-            ILinkedNode current = Head;
+            ILinkedNode<T> current = Head;
             int currentIndex = 0;
             while (current != null)
             {

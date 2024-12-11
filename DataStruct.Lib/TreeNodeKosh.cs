@@ -1,14 +1,13 @@
 ﻿using Interfaces_List;
-using static DataStruct.Lib.BinaryTreeNodeKosh;
 
 namespace DataStruct.Lib
 {
-    public class TreeNodeKosh : ITreeNodeKosh
-    {
-        public int Data { get;}
-        public ITreeNodeKosh Left { get; set; }
-        public ITreeNodeKosh Right { get; set; }
-        public TreeNodeKosh(int value)
+    public class TreeNodeKosh<T> : ITreeNodeKosh<T>  where T : IComparable<T>
+    { 
+        public T Data { get;}
+        public ITreeNodeKosh<T> Left { get; set; }
+        public ITreeNodeKosh<T> Right { get; set; }
+        public TreeNodeKosh(T value)
         {
             Data = value;
             Left = null;

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Interfaces_List
 {
-    public interface ITreeNodeKosh
+    public interface ITreeNodeKosh<T> where T : IComparable<T>
     {
-        int Data { get;}
-        ITreeNodeKosh Left { get; set; }
-        ITreeNodeKosh Right { get; set; }
+        T Data { get;}
+        ITreeNodeKosh<T> Left { get; set; }
+        ITreeNodeKosh<T> Right { get; set; }
 
     }
 
-    public interface IBinaryTree : IMyCollection
+    public interface IBinaryTree<T> : IMyCollection<T> where T : IComparable<T>
     {
-        ITreeNodeKosh root { get; set; }
+        ITreeNodeKosh<T> root { get; set; }
     }
 }
