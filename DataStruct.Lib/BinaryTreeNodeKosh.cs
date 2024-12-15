@@ -67,19 +67,16 @@ namespace DataStruct.Lib
 
         public bool Contains(T value)
         {
-            if (value is T item) // Переводимо object до int
-            {
-                return ContainsRec(root, item);
-            }
-            else return false;
-            //return ContainsRec(root, value);
+                return ContainsRec(root, value);
         }
 
         private bool ContainsRec(ITreeNodeKosh<T> node, T value)
         {
             if (node == null) return false;
             if (node.Data.CompareTo(value)==0) return true;
-            return /*value < node.Data*/ value.CompareTo(node.Data)>0? ContainsRec(node.Left, value) : ContainsRec(node.Right, value);
+            return value.CompareTo(node.Data) < 0
+            ? ContainsRec(node.Left, value)
+            : ContainsRec(node.Right, value);
         }
         public void Clear()
         { 

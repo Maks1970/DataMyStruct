@@ -16,8 +16,8 @@ namespace Interfaces_List
     }
     public interface IMyLinkedList<T> : IMyCollection<T>
     {
-        public T? First { get; }
-        public T? Last { get; }
+         T? First { get; }
+         T? Last { get; }
         void AddFirst(T item);
         void Insert(int index, T item);
 
