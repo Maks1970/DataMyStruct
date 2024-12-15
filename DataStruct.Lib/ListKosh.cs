@@ -8,7 +8,7 @@ namespace DataStruct.Lib
     {
         private object[] _innerArray;
         public int Count { get; private set; }
-
+        //324//
         public ListKosh(params object[] item)
         {
             if (item == null || item.Length == 0)
