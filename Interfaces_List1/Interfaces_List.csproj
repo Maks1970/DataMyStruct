@@ -6,8 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Interfaces_List1\Interfaces_List.csproj" />
-  </ItemGroup>
+
 
 </Project>

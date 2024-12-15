@@ -1,47 +1,48 @@
-﻿using System.Xml.Linq;
+﻿using Interfaces_List;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataStruct.Lib
 {
-    public class NodeDublyList:NodeList
+    public class NodeDublyList<T> : NodeList<T>, IDoublyLinkedNode<T>
     {
-        public NodeDublyList? Previous { get; set; }
-        public NodeDublyList(object data) : base(data)
+        public IDoublyLinkedNode<T>? Previous { get; set; }
+        public NodeDublyList(T data) : base(data)
         {
             Previous = null;
         }
     }
 
-    public class DoublylinkeList : LinkedList
+    public class DoublylinkeList<T> : LinkedListKosh<T>, IDoublyLinkedList<T>
     {
-        public object? First
+        public T? First
         {
-            get => Head?.Data;  // Повертає значення (Data) першої ноди, якщо вона є
+            get => Head.Data;  // Повертає значення (Data) першої ноди, якщо вона є
 
         }
 
-        private NodeDublyList? tail;
+        private IDoublyLinkedNode<T>? tail;
 
         public DoublylinkeList() : base()
         {
             tail = null;
         }
-        public DoublylinkeList(params object[] item)
+        public DoublylinkeList(params T[] item)
         {
-            foreach (object o in item)
+            foreach (T o in item)
             {
                 Add(o);
             }
         }
 
-        public DoublylinkeList(object item)
+        public DoublylinkeList(T item)
         {
              Add(item);
         }
 
-        public override void Add(object item)
+        public override void Add(T item)
         {
-            NodeDublyList newNode = new NodeDublyList(item);
+            NodeDublyList<T> newNode = new NodeDublyList<T>(item);
 
             if (Head == null)  // Якщо список порожній
             {
@@ -60,10 +61,10 @@ namespace DataStruct.Lib
             Count++;
         }
 
-        public override void  AddFirst(object item) 
+        public override void  AddFirst(T item) 
         {
-            NodeDublyList newNode = new NodeDublyList(item);
-            NodeDublyList newHead = (NodeDublyList)Head;
+            NodeDublyList<T> newNode = new NodeDublyList<T>(item);
+            NodeDublyList<T> newHead = (NodeDublyList<T>)Head;
 
             if (Head != newNode)  // Якщо список порожній
             {
@@ -82,15 +83,15 @@ namespace DataStruct.Lib
             Count++;
         }
 
-        public  void Remove(object obj)
+        public  void Remove(T obj)
         {
-            NodeDublyList? previous, next;
-            NodeDublyList current = (NodeDublyList)Head;
+            IDoublyLinkedNode<T>? previous, next;
+            IDoublyLinkedNode<T> current = (NodeDublyList<T>)Head;
             while (!current.Data.Equals(obj))
             {
-                current = (NodeDublyList)current.Next;
+                current = (NodeDublyList<T>)current.Next;
             }
-            next = (NodeDublyList)current.Next;
+            next = (NodeDublyList<T>)current.Next;
 
             previous = current.Previous;
             previous!.Next= next;

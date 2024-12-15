@@ -1,17 +1,17 @@
-﻿using static DataStruct.Lib.BinaryTreeNodeKosh;
+﻿using Interfaces_List;
 
 namespace DataStruct.Lib
 {
-    public class TreeNodeKosh
-    {
-        public int Data { get;}
-        public TreeNodeKosh left { get; set; }
-        public TreeNodeKosh right { get; set; }
-        public TreeNodeKosh(int value)
+    public class TreeNodeKosh<T> : ITreeNodeKosh<T>  where T : IComparable<T>
+    { 
+        public T Data { get;}
+        public ITreeNodeKosh<T> Left { get; set; }
+        public ITreeNodeKosh<T> Right { get; set; }
+        public TreeNodeKosh(T value)
         {
             Data = value;
-            left = null;
-            right = null;
+            Left = null;
+            Right = null;
         }
     }
 }

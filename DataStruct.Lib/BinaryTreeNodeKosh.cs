@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces_List;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -9,85 +10,92 @@ using System.Xml.Linq;
 
 namespace DataStruct.Lib
 {
-    public class BinaryTreeNodeKosh
+    public class BinaryTreeNodeKosh<T> : IBinaryTree<T> where T : IComparable<T>
     {
-        private TreeNodeKosh root { get;  set; }
-        public int Root => root?.Data ?? 0;
+        public ITreeNodeKosh<T> root { get;  set; }
+        public T Root => root.Data ?? default;
         public int Count { get; private set; }
-        public BinaryTreeNodeKosh(params int[] obj)
+        public BinaryTreeNodeKosh(params T[] obj)
         {
             Count = 0;
-            foreach (int i in obj)
+            foreach (T i in obj)
             {
                 Add(i);
                 
             }
         }
 
-        public BinaryTreeNodeKosh(int rootValue)
+        public BinaryTreeNodeKosh(T rootValue)
         {
-            root = new TreeNodeKosh(rootValue);
+            root = new TreeNodeKosh<T>(rootValue);
             Count = 0;
         }
 
-        public void Add(int value)
+        public void Add(T value)
         {
-            root = InnerAdd(root, value);
-            Count++;
+
+            if(value is T item)
+            {
+                root = InnerAdd(root, item);
+                Count++;
+            }
+            
         }
 
-        private TreeNodeKosh InnerAdd(TreeNodeKosh node, int value)
+        private ITreeNodeKosh<T> InnerAdd(ITreeNodeKosh<T> node, T value)
         {
             if (node == null)
             {
-                node = new TreeNodeKosh(value);
+               node = new TreeNodeKosh<T>(value);
                 return node;
             }
-            if (value == node.Data)
+            if (value.CompareTo(node.Data) == 0)
             {
                 Console.WriteLine($"{node.Data} present in the tree");
                 return node;
             }
-            if (value < node.Data)
+            if (value.CompareTo(node.Data) < 0)
             {
-                node.left = InnerAdd(node.left, value);
+                node.Left = InnerAdd(node.Left, value);
             }
-            else if (value > node.Data)
+            else if (value.CompareTo(node.Data) > 0)
             {
-                node.right = InnerAdd(node.right, value);
+                node.Right = InnerAdd(node.Right, value);
             }
             return node;
         }
 
-        public bool Contains(int value)
+        public bool Contains(T value)
         {
-            return ContainsRec(root, value);
+                return ContainsRec(root, value);
         }
 
-        private bool ContainsRec(TreeNodeKosh node, int value)
+        private bool ContainsRec(ITreeNodeKosh<T> node, T value)
         {
             if (node == null) return false;
-            if (node.Data == value) return true;
-            return value < node.Data ? ContainsRec(node.left, value) : ContainsRec(node.right, value);
+            if (node.Data.CompareTo(value)==0) return true;
+            return value.CompareTo(node.Data) < 0
+            ? ContainsRec(node.Left, value)
+            : ContainsRec(node.Right, value);
         }
         public void Clear()
         { 
-            root = null;
+            root = default;
         }
-        public int[] ToArray()
+        public T[] ToArray()
         {
-            int[] mas = new int[Count];  
+            T[] mas = new T[Count];  
             int currentIndex = 0; 
             PreOrderTraversalRec(root, mas, ref currentIndex);
             return mas;
         }
-        private void PreOrderTraversalRec(TreeNodeKosh node, int[] mas, ref int currentIndex)
+        private void PreOrderTraversalRec(ITreeNodeKosh<T> node, T[] mas, ref int currentIndex)
         {
             if (node != null)
             {
                 mas[currentIndex++] = node.Data;
-                PreOrderTraversalRec(node.left, mas, ref currentIndex);
-                PreOrderTraversalRec(node.right, mas, ref currentIndex);
+                PreOrderTraversalRec(node.Left, mas, ref currentIndex);
+                PreOrderTraversalRec(node.Right, mas, ref currentIndex);
             }
         }
 

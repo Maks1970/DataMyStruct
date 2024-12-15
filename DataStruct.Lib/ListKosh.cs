@@ -1,25 +1,27 @@
-﻿using System;
+﻿using Interfaces_List;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 
 namespace DataStruct.Lib
 {
-    public class ListKosh
+
+    public class ListKosh<T> : IMyList<T>
     {
-        private object[] _innerArray;
+        private T[] _innerArray; 
         public int Count { get; private set; }
 
-        public ListKosh(params object[] item)
+        public ListKosh(params T[] item)
         {
             if (item == null || item.Length == 0)
             {
                 // Якщо item дорівнює null або порожній, створюємо масив за замовчуванням з розміром 4
-                _innerArray = new object[4];
+                _innerArray = new T[4];
                 Count = 0;
             }
             else
             {
-                _innerArray = new object[item.Length];
+                _innerArray = new T[item.Length];
                 for (int i = 0; i < _innerArray.Length; i++)
                 {
                     _innerArray[i] = item[i];
@@ -28,7 +30,7 @@ namespace DataStruct.Lib
             }
         }
 
-        public object this[int index]
+        public T this[int index]
         {
             get
             {
@@ -48,9 +50,9 @@ namespace DataStruct.Lib
             }
         }
 
-        public void Add(object item)
+        public void Add(T item)
         {
-            object[] tempInnerArray = new object[Count + 1];
+            T[] tempInnerArray = new T[Count + 1];
             for (int i = 0; i < Count; i++)
             {
                 tempInnerArray[i] = _innerArray[i];
@@ -60,7 +62,7 @@ namespace DataStruct.Lib
             Count++;
         }
 
-        public void Insert(int index, object item)
+        public void Insert(int index, T item)
         {
             if (index < 0 || index > Count)
             {
@@ -86,7 +88,7 @@ namespace DataStruct.Lib
 
         private void ExpandArray()
         {
-            var newArray = new object[_innerArray.Length * 2];
+            var newArray = new T[_innerArray.Length * 2];
             for (int i = 0; i < _innerArray.Length; i++)
             {
                 newArray[i] = _innerArray[i];
@@ -94,7 +96,7 @@ namespace DataStruct.Lib
             _innerArray = newArray;
         }
 
-        public bool Remove(object item)
+        public bool Remove(T item)
         {
             var index = IndexOf(item);
             return index >= 0 && RemoveAt(index);
@@ -110,31 +112,31 @@ namespace DataStruct.Lib
             {
                 _innerArray[i] = _innerArray[i + 1];
             }
-            _innerArray[Count - 1] = null;
+            _innerArray[Count - 1] = default;
             Count--;
             return true;
         }
 
-        void Clear()
+        public void Clear()
         {
             for (int i = 0; i < Count; i++)
             {
-                _innerArray[i] = null;
+                _innerArray[i] = default;
             }
 
             Count = 0;
         }
 
-        public bool Contains(object item)
+        public bool Contains(T item)
         {
-            foreach (object ob in _innerArray)
+            foreach (T ob in _innerArray)
             {
                 if (ob.Equals(item)) return true;
             }
             return false;
         }
 
-        public int IndexOf(object item)
+        public int IndexOf(T item)
         {
             for (int i = 0; i < Count; i++)
             {
@@ -146,9 +148,9 @@ namespace DataStruct.Lib
             return -1; // Якщо об'єкт не знайдено
         }
 
-        public object [] ToArray()
+        public T [] ToArray()
         {
-            var newArray = new object[Count];
+            var newArray = new T[Count];
             for (int i = 0; i < Count; i++)
             {
                 newArray[i]= _innerArray[i];
@@ -162,7 +164,7 @@ namespace DataStruct.Lib
             int right = Count - 1;
             while (left < right)
             {
-                object temp = _innerArray[left];
+                T temp = _innerArray[left];
                 _innerArray[left] = _innerArray[right];
                 _innerArray[right] = temp;
 
