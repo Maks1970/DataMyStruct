@@ -1,13 +1,30 @@
 ﻿using DataStruct.Lib;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting;
 
 
 namespace DataStruct.Tests
 {
-    internal class Program
+    public class Program
     {
+      
         static void Main(string[] args)
         {
+            Console.WriteLine("MyObservableList");
+            var ObservableList = new MyObservableList<int>(1, 2, 3, 4, 5);
+            ObservableList.OnChange += ObservableList.MyHandle;
+            //    (sender, e) =>
+            //{ 
+            //    Console.WriteLine($"Дiя: {e.Change}, Елемент: {e.Item}"); 
+            //};
+            ObservableList.Add(2);
+            ObservableList.Insert(3,1);
+            ObservableList.Remove(2);
+            ObservableList.RemoveAt(3);
+            var arr = ObservableList.ToArray();
+           
+
             Console.WriteLine("ListKosh");
             var kosArr = new ListKosh<int>(1, 2, 3, 4, 5);
             kosArr.Insert(1, 0);
@@ -50,6 +67,7 @@ namespace DataStruct.Tests
             int countKoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Root;
             koshBinaryTreeNodeKosh.Clear();
             Console.WriteLine("");
+            ObservableList.OnChange -= ObservableList.MyHandle!;
         }
 
 
