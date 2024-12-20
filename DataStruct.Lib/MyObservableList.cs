@@ -12,12 +12,12 @@ namespace DataStruct.Lib
     public class MyObservableList<T> : IMyCollection<T>
     {
         private ListKosh<T> _innerList = new ListKosh<T>();
-        public EventHandler<CollectionChanged<T>> OnChange;
+        public event EventHandler<CollectionChanged<T>> OnChange;
         
-        public void MyHandle(object? sender, CollectionChanged<T> dd )
-        {
-            Console.WriteLine($"Дiя: {dd.Change}, Елемент: {dd.Item}");
-        }
+        //public void MyHandle(object? sender, CollectionChanged<T> dd )
+        //{
+        //    Console.WriteLine($"Дiя: {dd.Change}, Елемент: {dd.Item}");
+        //}
         public MyObservableList(params T[] items) 
         {
             foreach (var item in items)

@@ -8,12 +8,16 @@ namespace DataStruct.Tests
 {
     public class Program
     {
-      
+        public static void MyHandle<T>(object? sender, CollectionChanged<T> e)
+        {
+            Console.WriteLine($"Дiя: {e.Change}, Елемент: {e.Item}");
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("MyObservableList");
             var ObservableList = new MyObservableList<int>(1, 2, 3, 4, 5);
-            ObservableList.OnChange += ObservableList.MyHandle;
+            ObservableList.OnChange += MyHandle;
             //    (sender, e) =>
             //{ 
             //    Console.WriteLine($"Дiя: {e.Change}, Елемент: {e.Item}"); 
@@ -67,7 +71,7 @@ namespace DataStruct.Tests
             int countKoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Root;
             koshBinaryTreeNodeKosh.Clear();
             Console.WriteLine("");
-            ObservableList.OnChange -= ObservableList.MyHandle!;
+            ObservableList.OnChange -= MyHandle!;
         }
 
 
