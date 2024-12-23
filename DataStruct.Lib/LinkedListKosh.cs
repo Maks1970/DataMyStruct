@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -169,5 +170,47 @@ namespace DataStruct.Lib
             throw new ArgumentOutOfRangeException("Index exceeds the bounds of the list");
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new LinkedListKoshEnumerator(Head);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        public class LinkedListKoshEnumerator : IEnumerator<T>
+        {
+            private  ILinkedNode<T> _firstNode;
+            private  ILinkedNode<T> _node;
+
+            public LinkedListKoshEnumerator(ILinkedNode<T> firstNode)
+            {
+                this._firstNode = firstNode;
+                _node = null;
+            }
+
+            public T Current => _node.Data;
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext()
+            {
+                if (_firstNode == null) return false; 
+                _node = _firstNode; 
+                _firstNode = _node.Next;
+                return _node != null;
+            }
+
+            public void Reset()
+            {
+                _node = _firstNode;
+            }
+        }
     }
+   
 }

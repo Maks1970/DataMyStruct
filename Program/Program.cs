@@ -26,11 +26,24 @@ namespace DataStruct.Tests
             ObservableList.Insert(3,1);
             ObservableList.Remove(2);
             ObservableList.RemoveAt(3);
+            //int d =ObservableList[2];
+            foreach (var item in ObservableList) 
+            {
+                Console.WriteLine(item); 
+            }
             var arr = ObservableList.ToArray();
            
-
             Console.WriteLine("ListKosh");
             var kosArr = new ListKosh<int>(1, 2, 3, 4, 5);
+            foreach(var item in kosArr)
+            {
+                Console.WriteLine(item);
+            }
+            //IEnumerator<int> iter = kosArr.GetEnumerator();
+            //while (iter.MoveNext())
+            //{
+            //    Console.WriteLine(iter.Current);
+            //}
             kosArr.Insert(1, 0);
             var countKosharr = kosArr.Count;
             kosArr.RemoveAt(4);
@@ -39,7 +52,11 @@ namespace DataStruct.Tests
 
             Console.WriteLine("LinkedList");
 
-            var koshLinkedList = new LinkedListKosh<int>(1, 2, 3, 4);
+            var koshLinkedList = new LinkedListKosh<int>(1, 2, 3, 4, 5);
+            foreach (var item in koshLinkedList)
+            {
+                Console.WriteLine(item);
+            }
             koshLinkedList.Insert(1, 0);
             koshLinkedList.Add(2);
             koshLinkedList.AddFirst(2);
@@ -53,6 +70,10 @@ namespace DataStruct.Tests
             Console.WriteLine("DoublylinkeList");
 
             var koshDoublyLinkedList = new DoublylinkeList<int>(1, 2, 3, 4, 5);
+            foreach (var item in koshDoublyLinkedList)
+            {
+                Console.WriteLine(item);
+            }
             koshDoublyLinkedList.Add(2);
             koshDoublyLinkedList.AddFirst(2);
             bool contkoshDoublyLinkedList = koshDoublyLinkedList.Contains(3);
@@ -63,7 +84,11 @@ namespace DataStruct.Tests
 
             Console.WriteLine("BinaryTreeNodeKosh");
 
-            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh<int>(5, 3, 4, 6);
+            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh<int>(1, 2, 3, 4, 5);
+            foreach (var item in koshBinaryTreeNodeKosh)
+            {
+                Console.WriteLine(item);
+            }
             koshBinaryTreeNodeKosh.Add(2);
             bool contBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Contains(4);
             var toArrkoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.ToArray();
