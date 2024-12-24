@@ -176,7 +176,11 @@ namespace DataStruct.Lib
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new MyListInumerator(this);
+            for (int i = 0; i < _innerArray.Count(); i++)
+            {
+                yield return _innerArray[i];
+            }
+
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -184,33 +188,33 @@ namespace DataStruct.Lib
             return GetEnumerator();
         }
 
-        public class MyListInumerator : IEnumerator<T>
-        {
-            private readonly ListKosh<T> _list;
-            private int _index = -1;
-            public T Current => _list[_index];
-            public MyListInumerator(ListKosh<T> list)
-            {
-                this._list = list;
-            }
-            object IEnumerator.Current => Current;
+        //public class MyListInumerator : IEnumerator<T>
+        //{
+        //    private readonly ListKosh<T> _list;
+        //    private int _index = -1;
+        //    public T Current => _list[_index];
+        //    public MyListInumerator(ListKosh<T> list)
+        //    {
+        //        this._list = list;
+        //    }
+        //    object IEnumerator.Current => Current;
 
             
 
-            public bool MoveNext()
-            {
-                _index++;
-                return _index < _list.Count;
-            }
+        //    public bool MoveNext()
+        //    {
+        //        _index++;
+        //        return _index < _list.Count;
+        //    }
 
-            public void Reset()
-            {
-                _index = -1;
-            }
-            public void Dispose()
-            {
+        //    public void Reset()
+        //    {
+        //        _index = -1;
+        //    }
+        //    public void Dispose()
+        //    {
 
-            }
-        }
+        //    }
+        //}
     }
 }

@@ -72,43 +72,46 @@ namespace DataStruct.Lib
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new MyObservableListEnumerator(this);
+            for (int i = 0; i < _innerList.Count; i++)
+            {
+                yield return _innerList[i];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        public class MyObservableListEnumerator : IEnumerator<T>
-        {
-            private readonly MyObservableList<T> _innerList;
-            private  int _index=-1;
+        //public class MyObservableListEnumerator : IEnumerator<T>
+        //{
+        //    private readonly MyObservableList<T> _innerList;
+        //    private  int _index=-1;
 
-            public MyObservableListEnumerator(MyObservableList<T> list)
-            {
-                this._innerList = list;
-            }
+        //    public MyObservableListEnumerator(MyObservableList<T> list)
+        //    {
+        //        this._innerList = list;
+        //    }
 
-            public T Current => _innerList[_index];
+        //    public T Current => _innerList[_index];
 
-            object IEnumerator.Current => Current;
+        //    object IEnumerator.Current => Current;
 
-            public void Dispose()
-            {
+        //    public void Dispose()
+        //    {
                
-            }
+        //    }
 
-            public bool MoveNext()
-            {
-                _index++;
-                return _index < _innerList.Count;
-            }
+        //    public bool MoveNext()
+        //    {
+        //        _index++;
+        //        return _index < _innerList.Count;
+        //    }
 
-            public void Reset()
-            {
-                _index = -1;
-            }
-        }
+        //    public void Reset()
+        //    {
+        //        _index = -1;
+        //    }
+        //}
     }
     public enum Changes
     {

@@ -172,45 +172,52 @@ namespace DataStruct.Lib
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new LinkedListKoshEnumerator(Head);
+            if (Head == null) yield break;  // Якщо перший елемент відсутній, зупиняємо ітерацію.
+
+            ILinkedNode<T> firstNode = Head;  // Встановлюємо поточний елемент на перший.
+            while (firstNode != null)
+            {
+                yield return firstNode.Data;  // Повертаємо значення поточного елемента.
+                firstNode = firstNode.Next;  // Переходимо до наступного елемента.
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        public class LinkedListKoshEnumerator : IEnumerator<T>
-        {
-            private  ILinkedNode<T> _firstNode;
-            private  ILinkedNode<T> _node;
+        //public class LinkedListKoshEnumerator : IEnumerator<T>
+        //{
+        //    private  ILinkedNode<T> _firstNode;
+        //    private  ILinkedNode<T> _node;
 
-            public LinkedListKoshEnumerator(ILinkedNode<T> firstNode)
-            {
-                this._firstNode = firstNode;
-                _node = null;
-            }
+        //    public LinkedListKoshEnumerator(ILinkedNode<T> firstNode)
+        //    {
+        //        this._firstNode = firstNode;
+        //        _node = null;
+        //    }
 
-            public T Current => _node.Data;
+        //    public T Current => _node.Data;
 
-            object IEnumerator.Current => Current;
+        //    object IEnumerator.Current => Current;
 
-            public void Dispose()
-            {
-            }
+        //    public void Dispose()
+        //    {
+        //    }
 
-            public bool MoveNext()
-            {
-                if (_firstNode == null) return false; 
-                _node = _firstNode; 
-                _firstNode = _node.Next;
-                return _node != null;
-            }
+        //    public bool MoveNext()
+        //    {
+        //        if (_firstNode == null) return false; 
+        //        _node = _firstNode; 
+        //        _firstNode = _node.Next;
+        //        return _node != null;
+        //    }
 
-            public void Reset()
-            {
-                _node = _firstNode;
-            }
-        }
+        //    public void Reset()
+        //    {
+        //        _node = _firstNode;
+        //    }
+        //}
     }
    
 }
