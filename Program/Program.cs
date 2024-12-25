@@ -36,23 +36,40 @@ namespace DataStruct.Tests
             ObservableList.OnChange -= MyHandle!;
 
             Console.WriteLine("ListKosh");
-            var kosArr = new ListKosh<int>(2,2,2);
-
-            IEnumerator<int> iterList = kosArr.GetEnumerator();
-            iterList = new ToArrayM<int>(iterList);
-            ///////
-            var larr = new List<int> { 1, 2, 3, 4, 5 };
-            IEnumerator<int> enumar=larr.GetEnumerator();
-            enumar = new ToArrayM<int>(enumar);
-            while (enumar.MoveNext())
+            var kosArr = new ListKosh<int>(10, 15, 20, 25, 30, 35, 40, 45, 50,4,55,76,78,88,90);
+            var enumerator = kosArr.GetEnumerator()
+               .Filter(x => x > 10)
+               .Skip(2)
+               .SkipWhile(x => x < 40)
+               .Take(10)
+               .TakeWhile(x => x < 80)
+               .Select(x => x + 2)
+               .SelectMany(x => new[] { x, x * x });
+            var all = enumerator.All(x => x > 2);
+            var any = enumerator.Any(x => x > 10002);
+           
+            while (enumerator.MoveNext())
             {
-                Console.WriteLine(enumar.Current); // Виведе елементи масиву
+                //d = iterrList.Current;
+                Console.Write(enumerator.Current + " ");
+
             }
+            Console.WriteLine();
+            //IEnumerator<int> iterList = kosArr.GetEnumerator();
+            //iterList = new ToArrayM<int>(iterList);
+            ///////
+            //var larr = new List<int> { 1, 2, 3, 4, 5 };
+            //IEnumerator<int> enumar=larr.GetEnumerator();
+            //enumar = new ToArrayM<int>(enumar);
+            //while (enumar.MoveNext())
+            //{
+            //    Console.WriteLine(enumar.Current); // Виведе елементи масиву
+            //}
             //////////
 
-            var list = new ListKosh<int> { 1, 2, 3, 4, 5 };
-            var enumerator = list.GetEnumerator(); // Створення Enumerator для списку
-            iterList = new ToListM<int>(enumerator);
+            //var list = new ListKosh<int> { 1, 2, 3, 4, 5 };
+            // Створення Enumerator для списку
+            // IEnumerator<int> enumerator = kosArr.GetEnumerator() ;
             //iterList = toListM;
 
             ////arr
@@ -68,12 +85,12 @@ namespace DataStruct.Tests
             //IEnumerator<bool> iterrList = new AllM<int>(kosArr.GetEnumerator(), x => x % 5 == 0);
             // IEnumerable<int> itderList = new TakeM<int>(kosArr,2);
             //double firstGreaterThanTen = iterList.Current;
-            while (iterList.MoveNext())
-            {
-                //d = iterrList.Current;
-                Console.Write(iterList.Current + " ");
-                
-            }
+            //while (enumerator.MoveNext())
+            //{
+            //    //d = iterrList.Current;
+            //    Console.Write(enumerator.Current + " ");
+
+            //}
             Console.WriteLine();
             IEnumerator<int> iterSkipList = kosArr.GetEnumerator();
             iterSkipList = new SkipWhileM<int>(iterSkipList, skip => skip > 3);

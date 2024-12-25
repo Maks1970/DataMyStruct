@@ -10,10 +10,67 @@ namespace DataStruct.Lib
 {
     public static class LINQ
     {
-        //public static IEnumerable<T> ExFilterIterator<T>(this IEnumerator<T> baseIter, int count)
-        //{
-        //    return new TakeM<T>(baseIter, count);
-        //}
+        public static IEnumerator<T> Filter <T>(this IEnumerator<T> baseIter, Predicate<T> predicate)
+        {
+            return new FilterM<T>(baseIter, predicate);
+        }
+        public static IEnumerator<T> Skip<T>(this IEnumerator<T> enumerator, int count)
+        {
+            return new SkipM<T>(enumerator, count);
+        }
+        public static IEnumerator<T> SkipWhile<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        {
+            return new SkipWhileM<T>(enumerator, predicate);
+        }
+        public static IEnumerator<T> Take<T>(this IEnumerator<T> enumerator, int count)
+        {
+            return new TakeM<T>(enumerator,  count);
+        }
+        public static IEnumerator<T> TakeWhile<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        {
+            return new TakeWhileM<T>(enumerator, predicat);
+        }
+        public static IEnumerator<T> First<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        {
+            return new FirstM<T>(enumerator, predicat);
+        }
+        public static IEnumerator<T> FirstOrDefault<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        {
+            return new FirstOrDefaultM<T>(enumerator, predicat);
+        }
+        public static IEnumerator<T> Last<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        {
+            return new LastM<T>(enumerator, predicat);
+        }
+        public static IEnumerator<T> LastOrDefault<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        {
+            return new LastOrDefaultM<T>(enumerator, predicat);
+        }
+        public static IEnumerator<T> Select<T>(this IEnumerator<T> enumerator, Func<T, T> fun)
+        {
+            return new SelectM<T>(enumerator, fun);
+        }
+        public static IEnumerator<T> SelectMany<T>(this IEnumerator<T> enumerator, Func<T, IEnumerable<T>> func)
+        {
+            return new SelectManyM<T>(enumerator, func);
+        }
+        public static IEnumerator<T> All<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        {
+
+            return new AllM<T>(enumerator, predicate);
+        }
+        public static IEnumerator<T> Any<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        {
+            return new AnyM<T>(enumerator, predicate);
+        }
+        public static IEnumerator<T> ToArray<T>(this IEnumerator<T> enumerator)
+        {
+            return new ToArrayM<T>(enumerator);
+        }
+        public static IEnumerator<T> ToList<T>(this IEnumerator<T> enumerator)
+        {
+            return new ToListM<T>(enumerator);
+        }
     }
 
     public class FilterM<T> : IEnumerator<T>
@@ -28,7 +85,7 @@ namespace DataStruct.Lib
         }
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -63,7 +120,7 @@ namespace DataStruct.Lib
 
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -105,7 +162,7 @@ namespace DataStruct.Lib
 
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -143,7 +200,7 @@ namespace DataStruct.Lib
 
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -180,7 +237,7 @@ namespace DataStruct.Lib
 
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -213,7 +270,7 @@ namespace DataStruct.Lib
 
         public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -258,7 +315,7 @@ namespace DataStruct.Lib
             }
         }
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -303,7 +360,7 @@ namespace DataStruct.Lib
 
         public T Current => _last;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         // Ініціалізація
         public bool MoveNext()
@@ -351,13 +408,13 @@ namespace DataStruct.Lib
             _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
             _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
             _found = false;
-            _last = default(T);
+            _last =default(T);
             _def = true;
         }
 
         public T Current => _last;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         // Ініціалізація
         public bool MoveNext()
@@ -412,9 +469,9 @@ namespace DataStruct.Lib
 
         public T Current => _func.Invoke(_enumerator.Current);
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
-        // Ініціалізація
+        // Ініціалізація    
         public bool MoveNext() => _enumerator.MoveNext();
 
         // Скидання
@@ -443,7 +500,7 @@ namespace DataStruct.Lib
 
         public T Current => _currentEnumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
@@ -473,7 +530,7 @@ namespace DataStruct.Lib
             _currentEnumerator?.Dispose();
         }
     }
-    public class AllM<T> : IEnumerator<bool>
+    public class AllM<T> : IEnumerator<T>
     {
         private readonly IEnumerator<T> _enumerator;
         private readonly Predicate<T> _predicate;
@@ -485,9 +542,9 @@ namespace DataStruct.Lib
             _done = true;
         }
 
-        public bool Current => _done;
+        public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {
@@ -496,7 +553,6 @@ namespace DataStruct.Lib
 
         public bool MoveNext()
         {
-            // Перевіряємо всі елементи
             while (_enumerator.MoveNext())
             {
                 if (!_predicate(_enumerator.Current))
@@ -506,8 +562,8 @@ namespace DataStruct.Lib
                 }
             }
 
-            _done = true; // Якщо всі елементи пройшли перевірку
-            return false; // Завершуємо ітерацію
+            // Якщо всі елементи пройшли перевірку, повертаємо true
+            return _done;
         }
 
     public void Reset()
@@ -627,7 +683,7 @@ namespace DataStruct.Lib
         public T Current => _array[_index];
 
         // Метод для отримання поточного елемента (необхідно для IEnumerator)
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         // Метод MoveNext для перебору елементів
         public bool MoveNext()
@@ -672,7 +728,7 @@ namespace DataStruct.Lib
         public T Current => _list[_index];
 
         // Метод для отримання поточного елемента (необхідно для IEnumerator)
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         // Метод MoveNext для перебору елементів
         public bool MoveNext()
