@@ -10,9 +10,15 @@ namespace DataStruct.Lib
 {
     public static class LINQ
     {
-        public static IEnumerator<T> Filter <T>(this IEnumerator<T> baseIter, Predicate<T> predicate)
+        //public static IEnumerator<T> Filter<T>(this IEnumerator<T> baseIter, Predicate<T> predicate)
+        //{
+        //    return new FilterM<T>(baseIter, predicate);
+        //}
+        public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Predicate<T> predicate)
         {
-            return new FilterM<T>(baseIter, predicate);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            return new FilterM<T>(source, predicate);
         }
         public static IEnumerator<T> Skip<T>(this IEnumerator<T> enumerator, int count)
         {
@@ -30,80 +36,198 @@ namespace DataStruct.Lib
         {
             return new TakeWhileM<T>(enumerator, predicat);
         }
-        public static IEnumerator<T> First<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        //public static IEnumerator<T> First<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        //{
+        //    return new FirstM<T>(enumerator, predicat);
+        //}
+        public static T First<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
         {
-            return new FirstM<T>(enumerator, predicat);
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            while (enumerator.MoveNext())
+            {
+                if (predicate(enumerator.Current))
+                {
+                    return enumerator.Current;
+                }
+            }
+
+            throw new InvalidOperationException("No matching element found.");
         }
         public static IEnumerator<T> FirstOrDefault<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
         {
             return new FirstOrDefaultM<T>(enumerator, predicat);
         }
-        public static IEnumerator<T> Last<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        //public static IEnumerator<T> Last<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
+        //{
+        //    return new LastM<T>(enumerator, predicat);
+        //}
+        public static T Last<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
         {
-            return new LastM<T>(enumerator, predicat);
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            T lastMatch = default!;
+            bool found = false;
+
+            while (enumerator.MoveNext())
+            {
+                if (predicate(enumerator.Current))
+                {
+                    lastMatch = enumerator.Current;
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                throw new InvalidOperationException("No matching element found.");
+            }
+
+            return lastMatch;
         }
         public static IEnumerator<T> LastOrDefault<T>(this IEnumerator<T> enumerator, Predicate<T> predicat)
         {
             return new LastOrDefaultM<T>(enumerator, predicat);
         }
-        public static IEnumerator<T> Select<T>(this IEnumerator<T> enumerator, Func<T, T> fun)
+        public static IEnumerator<TResult> Select<T, TResult>(this IEnumerator<T> enumerator, Func<T, TResult> fun)
         {
-            return new SelectM<T>(enumerator, fun);
+            return new SelectM<T, TResult>(enumerator, fun);
         }
-        public static IEnumerator<T> SelectMany<T>(this IEnumerator<T> enumerator, Func<T, IEnumerable<T>> func)
+        public static IEnumerator<TResult> SelectMany<T, TResult>(this IEnumerator<T> enumerator, Func<T, IEnumerable<TResult>> func)
         {
-            return new SelectManyM<T>(enumerator, func);
+            return new SelectManyM<T, TResult>(enumerator, func);
         }
-        public static IEnumerator<T> All<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
+        //public static IEnumerator<T> All<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        //{
 
-            return new AllM<T>(enumerator, predicate);
-        }
-        public static IEnumerator<T> Any<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        //    return new AllM<T>(enumerator, predicate);
+        //}
+        //public static IEnumerator<T> Any<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
+        //{
+        //    return new AnyM<T>(enumerator, predicate);
+        //}
+        public static bool All<T>(this IEnumerator<T> enumerator, Predicate<T> predicate)
         {
-            return new AnyM<T>(enumerator, predicate);
-        }
-        public static IEnumerator<T> ToArray<T>(this IEnumerator<T> enumerator)
-        {
-            return new ToArrayM<T>(enumerator);
-        }
-        public static IEnumerator<T> ToList<T>(this IEnumerator<T> enumerator)
-        {
-            return new ToListM<T>(enumerator);
-        }
-    }
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-    public class FilterM<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator<T> _enumerator;
-        private readonly Predicate<T> _filter;
-
-        public FilterM(IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
-            this._enumerator = enumerator;
-            this._filter = predicate;
-        }
-        public T Current => _enumerator.Current;
-
-        object? IEnumerator.Current => Current;
-
-        public void Dispose()
-        {
-        }
-
-        public bool MoveNext()
-        {
-            while (_enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
-                if (_filter.Invoke(_enumerator.Current))
+                if (!predicate(enumerator.Current))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public static bool Any<T>(this IEnumerator<T> enumerator, Predicate<T> predicate = null!)
+        {
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+
+            while (enumerator.MoveNext())
+            {
+                if (predicate == null || predicate(enumerator.Current))
                 {
                     return true;
                 }
             }
-            return false;
+            return false; 
         }
-        public void Reset()
+        //public static IEnumerator<T> ToArray<T>(this IEnumerator<T> enumerator)
+        //{
+        //    return new ToArrayM<T>(enumerator);
+        //}
+        public static T[] ToArray<T>(this IEnumerator<T> enumerator)
         {
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            T[] array = new T[10];
+            int count = 0;
+            while (enumerator.MoveNext())
+            {
+                if (count == array.Length)
+                {
+                    Array.Resize(ref array, array.Length * 2); 
+                }
+                array[count] = enumerator.Current;
+                count++;
+            }
+            Array.Resize(ref array, count);
+            return array;
+        }
+        //public static IEnumerator<T> ToList<T>(this IEnumerator<T> enumerator)
+        //{
+        //    return new ToListM<T>(enumerator);
+        //}
+        public static List<T> ToList<T>(this IEnumerator<T> enumerator)
+        {
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            var list = new List<T>();
+            while (enumerator.MoveNext())
+            {
+                list.Add(enumerator.Current);
+            }
+            return list;
+        }
+    }
+
+    //public class FilterM<T> : IEnumerator<T>
+    //{
+    //    private readonly IEnumerator<T> _enumerator;
+    //    private readonly Predicate<T> _filter;
+
+    //    public FilterM(IEnumerator<T> enumerator, Predicate<T> predicate)
+    //    {
+    //        this._enumerator = enumerator;
+    //        this._filter = predicate;
+    //    }
+    //    public T Current => _enumerator.Current;
+
+    //    object? IEnumerator.Current => Current;
+
+    //    public void Dispose()
+    //    {
+    //    }
+
+    //    public bool MoveNext()
+    //    {
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            if (_filter.Invoke(_enumerator.Current))
+    //            {
+    //                return true;
+    //            }
+    //        }
+    //        return false;
+    //    }
+    //    public void Reset()
+    //    {
+    //    }
+    //}
+    public class FilterM<T> : IEnumerable<T>
+    {
+        private readonly IEnumerable<T> _source;
+        private readonly Predicate<T> _filter;
+        public FilterM(IEnumerable<T> source, Predicate<T> predicate)
+        {
+            this._source = source;
+            this._filter = predicate;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in _source)
+            {
+                if (_filter.Invoke(item))
+                {
+                    yield return item;
+                }
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
     public class SkipM<T> : IEnumerator<T>
@@ -256,43 +380,43 @@ namespace DataStruct.Lib
         {
         }
     }
-    public class FirstM<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator<T> _enumerator;
-        private readonly Predicate<T> _predicate;
-        bool _first;
-        public FirstM(IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
-            _enumerator = enumerator;
-            _predicate = predicate;
-            _first = false;
-        }
+    //public class FirstM<T> : IEnumerator<T>
+    //{
+    //    private readonly IEnumerator<T> _enumerator;
+    //    private readonly Predicate<T> _predicate;
+    //    bool _first;
+    //    public FirstM(IEnumerator<T> enumerator, Predicate<T> predicate)
+    //    {
+    //        _enumerator = enumerator;
+    //        _predicate = predicate;
+    //        _first = false;
+    //    }
 
-        public T Current => _enumerator.Current;
+    //    public T Current => _enumerator.Current;
 
-        object? IEnumerator.Current => Current;
+    //    object? IEnumerator.Current => Current;
 
-        public void Dispose()
-        {
-        }
+    //    public void Dispose()
+    //    {
+    //    }
 
-        public bool MoveNext()
-        {
-            while (_enumerator.MoveNext() && !_first)
-            {
-                if (_predicate.Invoke(_enumerator.Current) == true)
-                {
-                    return _first = true;
-                }
-            }
-            return false;
+    //    public bool MoveNext()
+    //    {
+    //        while (_enumerator.MoveNext() && !_first)
+    //        {
+    //            if (_predicate.Invoke(_enumerator.Current) /*== true*/)
+    //            {
+    //                return _first = true;
+    //            }
+    //        }
+    //        return false;
 
-        }
+    //    }
 
-        public void Reset()
-        {
-        }
-    }
+    //    public void Reset()
+    //    {
+    //    }
+    //}
     public class FirstOrDefaultM<T> : IEnumerator<T>
     {
         private readonly IEnumerator<T> _enumerator;
@@ -344,57 +468,57 @@ namespace DataStruct.Lib
         {
         }
     }
-    public class LastM<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator<T> _enumerator;
-        private readonly Predicate<T> _predicate;
-        private T _last;
-        private bool _found;
+    //public class LastM<T> : IEnumerator<T>
+    //{
+    //    private readonly IEnumerator<T> _enumerator;
+    //    private readonly Predicate<T> _predicate;
+    //    private T _last;
+    //    private bool _found;
 
-        public LastM(IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
-            _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-            _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
-            _found = false;
-        }
+    //    public LastM(IEnumerator<T> enumerator, Predicate<T> predicate)
+    //    {
+    //        _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
+    //        _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+    //        _found = false;
+    //    }
 
-        public T Current => _last;
+    //    public T Current => _last;
 
-        object? IEnumerator.Current => Current;
+    //    object? IEnumerator.Current => Current;
 
-        // Ініціалізація
-        public bool MoveNext()
-        {
-            while (_enumerator.MoveNext())
-            {
-                if (_predicate(_enumerator.Current))
-                {
-                    _last = _enumerator.Current;
-                    _found = true;
-                }
-            }
-            if (_found)
-            {
-                _found = false;
-                return true;
-            }
-            return _found;
-        }
+    //    // Ініціалізація
+    //    public bool MoveNext()
+    //    {
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            if (_predicate(_enumerator.Current))
+    //            {
+    //                _last = _enumerator.Current;
+    //                _found = true;
+    //            }
+    //        }
+    //        if (_found)
+    //        {
+    //            _found = false;
+    //            return true;
+    //        }
+    //        return _found;
+    //    }
 
-        // Скидання
-        public void Reset()
-        {
-            _enumerator.Reset();
-            _found = false;
-            _last = default(T);
-        }
+    //    // Скидання
+    //    public void Reset()
+    //    {
+    //        _enumerator.Reset();
+    //        _found = false;
+    //        _last = default(T);
+    //    }
 
-        // Звільнення ресурсів
-        public void Dispose()
-        {
-            _enumerator.Dispose();
-        }
-    }
+    //    // Звільнення ресурсів
+    //    public void Dispose()
+    //    {
+    //        _enumerator.Dispose();
+    //    }
+    //}
     public class LastOrDefaultM<T> : IEnumerator<T>
     {
         private readonly IEnumerator<T> _enumerator;
@@ -455,19 +579,18 @@ namespace DataStruct.Lib
             _enumerator.Dispose();
         }
     }
-    public class SelectM<T> : IEnumerator<T>
+    public class SelectM<T, TResult> : IEnumerator<TResult>
     {
         private readonly IEnumerator<T> _enumerator;
-        private readonly Func<T,T> _func;
+        private readonly Func<T, TResult> _func;
 
-
-        public SelectM(IEnumerator<T> enumerator, Func<T,T> fun)
+        public SelectM(IEnumerator<T> enumerator, Func<T, TResult> func)
         {
             _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-            _func = fun ?? throw new ArgumentNullException(nameof(fun));
+            _func = func ?? throw new ArgumentNullException(nameof(func));
         }
 
-        public T Current => _func.Invoke(_enumerator.Current);
+        public TResult Current => _func.Invoke(_enumerator.Current);
 
         object? IEnumerator.Current => Current;
 
@@ -477,6 +600,7 @@ namespace DataStruct.Lib
         // Скидання
         public void Reset()
         {
+            _enumerator.Reset();
         }
 
         // Звільнення ресурсів
@@ -485,38 +609,38 @@ namespace DataStruct.Lib
             _enumerator.Dispose();
         }
     }
-    public class SelectManyM<T> : IEnumerator<T>
+    public class SelectManyM<T, TResult> : IEnumerator<TResult>
     {
         private readonly IEnumerator<T> _enumerator;
-        private readonly Func<T, IEnumerable<T>> _func;
-        private IEnumerator<T> _currentEnumerator;
+        private readonly Func<T, IEnumerable<TResult>> _func;
+        private IEnumerator<TResult>? _currentEnumerator;
 
-        public SelectManyM(IEnumerator<T> enumerator, Func<T, IEnumerable<T>> func)
+        public SelectManyM(IEnumerator<T> enumerator, Func<T, IEnumerable<TResult>> func)
         {
             _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
             _func = func ?? throw new ArgumentNullException(nameof(func));
-            _currentEnumerator = null!;
+            _currentEnumerator = null;
         }
 
-        public T Current => _currentEnumerator.Current;
+        public TResult Current => _currentEnumerator!.Current;
 
         object? IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
-            // Якщо підколекція пуста або закінчилася
+            // Якщо поточний enumerator порожній або завершився, перемикаємось на наступний
             while (_currentEnumerator == null || !_currentEnumerator.MoveNext())
             {
                 if (!_enumerator.MoveNext())
                 {
-                    return false; // Вихід із зовнішнього enumerator
+                    return false; // Всі елементи оброблено
                 }
 
                 // Отримуємо нову підколекцію для поточного елемента
-                _currentEnumerator = _func.Invoke(_enumerator.Current).GetEnumerator();
+                _currentEnumerator = _func(_enumerator.Current).GetEnumerator();
             }
 
-            return true; // Переміщення до наступного елемента у підколекції
+            return true; // Успішно перемістились на наступний елемент
         }
 
         public void Reset()
@@ -530,86 +654,86 @@ namespace DataStruct.Lib
             _currentEnumerator?.Dispose();
         }
     }
-    public class AllM<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator<T> _enumerator;
-        private readonly Predicate<T> _predicate;
-        private bool _done;
-        public AllM(IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
-            _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-            _predicate = predicate;
-            _done = true;
-        }
+    //public class AllM<T> : IEnumerator<T>
+    //{
+    //    private readonly IEnumerator<T> _enumerator;
+    //    private readonly Predicate<T> _predicate;
+    //    private bool _done;
+    //    public AllM(IEnumerator<T> enumerator, Predicate<T> predicate)
+    //    {
+    //        _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
+    //        _predicate = predicate;
+    //        _done = true;
+    //    }
 
-        public T Current => _enumerator.Current;
+    //    public T Current => _enumerator.Current;
 
-        object? IEnumerator.Current => Current;
+    //    object? IEnumerator.Current => Current;
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+    //    public void Dispose()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public bool MoveNext()
-        {
-            while (_enumerator.MoveNext())
-            {
-                if (!_predicate(_enumerator.Current))
-                {
-                    _done = false; // Якщо хоча б один елемент не відповідає умові
-                    return false; // Завершуємо ітерацію, бо результат вже визначено
-                }
-            }
+    //    public bool MoveNext()
+    //    {
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            if (!_predicate(_enumerator.Current))
+    //            {
+    //                _done = false; // Якщо хоча б один елемент не відповідає умові
+    //                return false; // Завершуємо ітерацію, бо результат вже визначено
+    //            }
+    //        }
 
-            // Якщо всі елементи пройшли перевірку, повертаємо true
-            return _done;
-        }
+    //        // Якщо всі елементи пройшли перевірку, повертаємо true
+    //        return _done;
+    //    }
 
-    public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public class AnyM<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator<T> _enumerator;
-        private readonly Predicate<T> _predicate;
-        private bool _found;
+    //public void Reset()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+    //public class AnyM<T> : IEnumerator<T>
+    //{
+    //    private readonly IEnumerator<T> _enumerator;
+    //    private readonly Predicate<T> _predicate;
+    //    private bool _found;
 
-        public AnyM(IEnumerator<T> enumerator, Predicate<T> predicate)
-        {
-            _enumerator = enumerator;
-            _predicate = predicate;
-            _found = false;
-        }
+    //    public AnyM(IEnumerator<T> enumerator, Predicate<T> predicate)
+    //    {
+    //        _enumerator = enumerator;
+    //        _predicate = predicate;
+    //        _found = false;
+    //    }
 
-        public T Current => _enumerator.Current;
+    //    public T Current => _enumerator.Current;
 
-        object IEnumerator.Current => Current;
+    //    object IEnumerator.Current => Current;
 
-        public void Dispose()
-        {
-        }
+    //    public void Dispose()
+    //    {
+    //    }
 
-        public bool MoveNext()
-        {
-            while (_enumerator.MoveNext())
-            {
-                if (_predicate(_enumerator.Current)) // Якщо знайдено елемент, що відповідає умові
-                {
-                    _found = true;
-                    return true;
-                }
-            }
+    //    public bool MoveNext()
+    //    {
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            if (_predicate(_enumerator.Current)) // Якщо знайдено елемент, що відповідає умові
+    //            {
+    //                _found = true;
+    //                return true;
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
 
-        public void Reset()
-        {
-        }
-    }
+    //    public void Reset()
+    //    {
+    //    }
+    //}
     //public class ToArrayM<T> : IEnumerator<T>
     //{
     //    private T[] _array;
@@ -657,98 +781,98 @@ namespace DataStruct.Lib
     //        return _array;
     //    }
     //}
-    public class ToArrayM<T> : IEnumerator<T>
-    {
-        private T[] _array;  // Масив для збереження елементів
-        private int _index = -1;  // Індекс для перебору
-        private IEnumerator<T> _enumerator;  // Вхідний IEnumerator<T>
+    //public class  ToArrayM<T> : IEnumerator<T>
+    //{
+    //    private T[] _array;  // Масив для збереження елементів
+    //    private int _index = -1;  // Індекс для перебору
+    //    private IEnumerator<T> _enumerator;  // Вхідний IEnumerator<T>
 
-        // Конструктор, який приймає IEnumerator<T> і створює масив
-        public ToArrayM(IEnumerator<T> enumerator)
-        {
-            _enumerator = enumerator;
-            var tempList = new List<T>();
+    //    // Конструктор, який приймає IEnumerator<T> і створює масив
+    //    public ToArrayM(IEnumerator<T> enumerator)
+    //    {
+    //        _enumerator = enumerator;
+    //        var tempList = new List<T>();
 
-            // Перебираємо елементи і додаємо їх в список
-            while (_enumerator.MoveNext())
-            {
-                tempList.Add(_enumerator.Current);
-            }
+    //        // Перебираємо елементи і додаємо їх в список
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            tempList.Add(_enumerator.Current);
+    //        }
 
-            // Перетворюємо список на масив
-            _array = tempList.ToArray();
-        }
+    //        // Перетворюємо список на масив
+    //        _array = tempList.ToArray();
+    //    }
 
-        // Поточний елемент
-        public T Current => _array[_index];
+    //    // Поточний елемент
+    //    public T Current => _array[_index];
 
-        // Метод для отримання поточного елемента (необхідно для IEnumerator)
-        object? IEnumerator.Current => Current;
+    //    // Метод для отримання поточного елемента (необхідно для IEnumerator)
+    //    object? IEnumerator.Current => Current;
 
-        // Метод MoveNext для перебору елементів
-        public bool MoveNext()
-        {
-            if (_index < _array.Length - 1)
-            {
-                _index++;
-                return true;
-            }
-            return false;
-        }
+    //    // Метод MoveNext для перебору елементів
+    //    public bool MoveNext()
+    //    {
+    //        if (_index < _array.Length - 1)
+    //        {
+    //            _index++;
+    //            return true;
+    //        }
+    //        return false;
+    //    }
 
-        // Метод Reset для скидання індексу
-        public void Reset()
-        {
-            _index = -1;
-        }
+    //    // Метод Reset для скидання індексу
+    //    public void Reset()
+    //    {
+    //        _index = -1;
+    //    }
 
-        // Метод Dispose (можна залишити порожнім, якщо немає ресурсів для звільнення)
-        public void Dispose() { }
-    }
-    public class ToListM<T> : IEnumerator<T>
-    {
-        private List<T> _list; // Список для збереження елементів
-        private int _index = -1; // Індекс для перебору
-        private IEnumerator<T> _enumerator; // Вхідний IEnumerator<T>
+    //    // Метод Dispose (можна залишити порожнім, якщо немає ресурсів для звільнення)
+    //    public void Dispose() { }
+    //}
+    //public class ToListM<T> : IEnumerator<T>
+    //{
+    //    private List<T> _list; // Список для збереження елементів
+    //    private int _index = -1; // Індекс для перебору
+    //    private IEnumerator<T> _enumerator; // Вхідний IEnumerator<T>
 
-        // Конструктор, який приймає IEnumerator<T> і створює список
-        public ToListM(IEnumerator<T> enumerator)
-        {
-            _enumerator = enumerator;
-            _list = new List<T>();
+    //    // Конструктор, який приймає IEnumerator<T> і створює список
+    //    public ToListM(IEnumerator<T> enumerator)
+    //    {
+    //        _enumerator = enumerator;
+    //        _list = new List<T>();
 
-            // Використовуємо MoveNext для проходу по всіх елементах і додаємо їх в список
-            while (_enumerator.MoveNext())
-            {
-                _list.Add(_enumerator.Current);
-            }
-        }
+    //        // Використовуємо MoveNext для проходу по всіх елементах і додаємо їх в список
+    //        while (_enumerator.MoveNext())
+    //        {
+    //            _list.Add(_enumerator.Current);
+    //        }
+    //    }
 
-        // Поточний елемент
-        public T Current => _list[_index];
+    //    // Поточний елемент
+    //    public T Current => _list[_index];
 
-        // Метод для отримання поточного елемента (необхідно для IEnumerator)
-        object? IEnumerator.Current => Current;
+    //    // Метод для отримання поточного елемента (необхідно для IEnumerator)
+    //    object? IEnumerator.Current => Current;
 
-        // Метод MoveNext для перебору елементів
-        public bool MoveNext()
-        {
-            if (_index < _list.Count - 1)
-            {
-                _index++;
-                return true;
-            }
-            return false;
-        }
+    //    // Метод MoveNext для перебору елементів
+    //    public bool MoveNext()
+    //    {
+    //        if (_index < _list.Count - 1)
+    //        {
+    //            _index++;
+    //            return true;
+    //        }
+    //        return false;
+    //    }
 
-        // Метод Reset для скидання індексу
-        public void Reset()
-        {
-            _index = -1;
-        }
+    //    // Метод Reset для скидання індексу
+    //    public void Reset()
+    //    {
+    //        _index = -1;
+    //    }
 
-        // Метод Dispose (можна залишити порожнім, якщо немає ресурсів для звільнення)
-        public void Dispose() { }
-    }
+    //    // Метод Dispose (можна залишити порожнім, якщо немає ресурсів для звільнення)
+    //    public void Dispose() { }
+    //}
 
 }

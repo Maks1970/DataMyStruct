@@ -37,17 +37,23 @@ namespace DataStruct.Tests
 
             Console.WriteLine("ListKosh");
             var kosArr = new ListKosh<int>(10, 15, 20, 25, 30, 35, 40, 45, 50,4,55,76,78,88,90);
+            //var enumerator = kosArr.GetEnumerator();
+            //var numberArr = enumerator.ToArray();
+            //List<int> numberList = enumerator.ToList();
+          var  koArr = kosArr.Filter(x => x % 2 == 0);
+            foreach(var k in koArr) {  Console.WriteLine(k); }
             var enumerator = kosArr.GetEnumerator()
-               .Filter(x => x > 10)
                .Skip(2)
                .SkipWhile(x => x < 40)
                .Take(10)
                .TakeWhile(x => x < 80)
                .Select(x => x + 2)
                .SelectMany(x => new[] { x, x * x });
-            var all = enumerator.All(x => x > 2);
-            var any = enumerator.Any(x => x > 10002);
-           
+            //  int d = enumerator.Last(x => x > 2213);
+            //bool any = enumerator.Any(num => num % 2 == 0);
+            //bool all = enumerator.All(x => x > 2);
+
+
             while (enumerator.MoveNext())
             {
                 //d = iterrList.Current;
