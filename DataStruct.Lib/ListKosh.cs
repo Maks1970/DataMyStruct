@@ -1,5 +1,6 @@
 ﻿using Interfaces_List;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 
@@ -173,5 +174,47 @@ namespace DataStruct.Lib
             }
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                yield return _innerArray[i];
+            }
+
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        //public class MyListInumerator : IEnumerator<T>
+        //{
+        //    private readonly ListKosh<T> _list;
+        //    private int _index = -1;
+        //    public T Current => _list[_index];
+        //    public MyListInumerator(ListKosh<T> list)
+        //    {
+        //        this._list = list;
+        //    }
+        //    object IEnumerator.Current => Current;
+
+            
+
+        //    public bool MoveNext()
+        //    {
+        //        _index++;
+        //        return _index < _list.Count;
+        //    }
+
+        //    public void Reset()
+        //    {
+        //        _index = -1;
+        //    }
+        //    public void Dispose()
+        //    {
+
+        //    }
+        //}
     }
 }

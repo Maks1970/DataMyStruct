@@ -1,5 +1,6 @@
 ﻿using Interfaces_List;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -99,5 +100,103 @@ namespace DataStruct.Lib
             }
         }
 
-    }
+        public IEnumerator<T> GetEnumerator()
+        {
+            T[] mas = new T[Count];
+            int currentIndex = 0;
+            PreOrderTraversalRec(root, mas, ref currentIndex);
+            for (int i = 0; i < mas.Count(); i++)
+            {
+                yield return mas[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+       
+            //public class BinaryTreeNodeKoshEnumerator : IEnumerator<T>
+            //{
+            //    private ITreeNodeKosh<T> _root;
+            //    private ITreeNodeKosh<T> _current;
+            //    private ITreeNodeKosh<T> _predecessor;
+            //    public BinaryTreeNodeKoshEnumerator(ITreeNodeKosh<T> root)
+            //    {
+            //        _root = root ?? throw new ArgumentNullException(nameof(root), "Root cannot be null");
+            //        _current = null; // Початкове значення для _current
+            //        _predecessor = null;
+            //    }
+
+            //    public T Current
+            //    {
+            //        get
+            //        {
+            //            if (_current == null)
+            //                throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
+            //            return _current.Data;
+
+            //        }
+            //    } /*=>  _current.Data;*/
+
+
+            //    object IEnumerator.Current => Current;
+
+            //    public void Dispose()
+            //    {
+            //    }
+
+            //    public bool MoveNext()
+            //    {
+            //        if (_current == null)
+            //        {
+            //            // Перший крок: встановити _current на корінь дерева
+            //            _current = _root;
+            //            return _current != null; // Якщо дерево порожнє, одразу завершуємо ітерацію
+            //        }
+
+            //        while (_current != null)
+            //        {
+            //            if (_current.Left == null)
+            //            {
+            //                // Немає лівого піддерева, обробляємо поточний вузол
+            //                var result = _current;
+            //                _current = _current.Right; // Переходимо до правого піддерева
+            //                return result != null;
+            //            }
+            //            else
+            //            {
+            //                // Знайти інфіксного попередника
+            //                _predecessor = _current.Left;
+            //                while (_predecessor.Right != null && _predecessor.Right != _current)
+            //                {
+            //                    _predecessor = _predecessor.Right;
+            //                }
+
+            //                if (_predecessor.Right == null)
+            //                {
+            //                    // Встановити тимчасове посилання
+            //                    _predecessor.Right = _current;
+            //                    _current = _current.Left;
+            //                }
+            //                else
+            //                {
+            //                    // Видалити тимчасове посилання та обробити поточний вузол
+            //                    _predecessor.Right = null;
+            //                    var result = _current;
+            //                    _current = _current.Right;
+            //                    return result != null;
+            //                }
+            //            }
+            //        }
+
+            //        return false; // Кінець дерева
+            //    }
+
+            //    public void Reset()
+            //    {
+            //        _current = _root;
+            //    }
+            //}
+        }
 }

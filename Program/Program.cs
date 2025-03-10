@@ -26,11 +26,102 @@ namespace DataStruct.Tests
             ObservableList.Insert(3,1);
             ObservableList.Remove(2);
             ObservableList.RemoveAt(3);
+            //int d =ObservableList[2];
+            //foreach (var item in ObservableList) 
+            //{
+            //    Console.Write(item+" "); 
+            //}
+            Console.WriteLine();
             var arr = ObservableList.ToArray();
-           
+            ObservableList.OnChange -= MyHandle!;
 
             Console.WriteLine("ListKosh");
-            var kosArr = new ListKosh<int>(1, 2, 3, 4, 5);
+            var kosArr = new ListKosh<int>(10, 15, 20, 25, 30, 35, 40, 45, 50,4,55,76,78,88,90);
+            //var enumerator = kosArr.GetEnumerator();
+            //var numberArr = enumerator.ToArray();
+            //List<int> numberList = enumerator.ToList();
+          var  koArr = kosArr.Filter(x => x % 2 == 0);
+            foreach(var k in koArr) {  Console.WriteLine(k); }
+            var enumerator = kosArr.GetEnumerator()
+               .Skip(2)
+               .SkipWhile(x => x < 40)
+               .Take(10)
+               .TakeWhile(x => x < 80)
+               .Select(x => x + 2)
+               .SelectMany(x => new[] { x, x * x });
+            //  int d = enumerator.Last(x => x > 2213);
+            //bool any = enumerator.Any(num => num % 2 == 0);
+            //bool all = enumerator.All(x => x > 2);
+
+
+            while (enumerator.MoveNext())
+            {
+                //d = iterrList.Current;
+                Console.Write(enumerator.Current + " ");
+
+            }
+            Console.WriteLine();
+            //IEnumerator<int> iterList = kosArr.GetEnumerator();
+            //iterList = new ToArrayM<int>(iterList);
+            ///////
+            //var larr = new List<int> { 1, 2, 3, 4, 5 };
+            //IEnumerator<int> enumar=larr.GetEnumerator();
+            //enumar = new ToArrayM<int>(enumar);
+            //while (enumar.MoveNext())
+            //{
+            //    Console.WriteLine(enumar.Current); // Виведе елементи масиву
+            //}
+            //////////
+
+            //var list = new ListKosh<int> { 1, 2, 3, 4, 5 };
+            // Створення Enumerator для списку
+            // IEnumerator<int> enumerator = kosArr.GetEnumerator() ;
+            //iterList = toListM;
+
+            ////arr
+            ////var dd  = new ToArrayM<int>(iterList);
+            //IEnumerator<int> enumerator = kosArr.GetEnumerator();
+
+            //// Створюємо екземпляр ToArrayM з переданим enumerator
+            //ToArrayM<int> toArrayM = new ToArrayM<int>(enumerator);
+
+            //// Виводимо всі елементи за допомогою ToArray
+            //int[] array = toArrayM.ToArray();
+            ////arr
+            //IEnumerator<bool> iterrList = new AllM<int>(kosArr.GetEnumerator(), x => x % 5 == 0);
+            // IEnumerable<int> itderList = new TakeM<int>(kosArr,2);
+            //double firstGreaterThanTen = iterList.Current;
+            //while (enumerator.MoveNext())
+            //{
+            //    //d = iterrList.Current;
+            //    Console.Write(enumerator.Current + " ");
+
+            //}
+            Console.WriteLine();
+            IEnumerator<int> iterSkipList = kosArr.GetEnumerator();
+            iterSkipList = new SkipWhileM<int>(iterSkipList, skip => skip > 3);
+            while (iterSkipList.MoveNext())
+            {
+                Console.Write(iterSkipList.Current + " ");
+            }
+
+            foreach (var item in kosArr)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
+            
+            //var buf = kosArr.TakeM(3);
+            //foreach (var item in kosArr.Skip( num=>num<4))
+            //{
+            //    Console.Write(item + " ");
+            //}
+            Console.WriteLine();
+            //IEnumerator<int> iter = kosArr.GetEnumerator();
+            //while (iter.MoveNext())
+            //{
+            //    Console.WriteLine(iter.Current);
+            //}
             kosArr.Insert(1, 0);
             var countKosharr = kosArr.Count;
             kosArr.RemoveAt(4);
@@ -39,7 +130,12 @@ namespace DataStruct.Tests
 
             Console.WriteLine("LinkedList");
 
-            var koshLinkedList = new LinkedListKosh<int>(1, 2, 3, 4);
+            var koshLinkedList = new LinkedListKosh<int>(1, 2, 3, 4, 5);
+            foreach (var item in koshLinkedList)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
             koshLinkedList.Insert(1, 0);
             koshLinkedList.Add(2);
             koshLinkedList.AddFirst(2);
@@ -53,6 +149,11 @@ namespace DataStruct.Tests
             Console.WriteLine("DoublylinkeList");
 
             var koshDoublyLinkedList = new DoublylinkeList<int>(1, 2, 3, 4, 5);
+            foreach (var item in koshDoublyLinkedList)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
             koshDoublyLinkedList.Add(2);
             koshDoublyLinkedList.AddFirst(2);
             bool contkoshDoublyLinkedList = koshDoublyLinkedList.Contains(3);
@@ -63,7 +164,12 @@ namespace DataStruct.Tests
 
             Console.WriteLine("BinaryTreeNodeKosh");
 
-            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh<int>(5, 3, 4, 6);
+            var koshBinaryTreeNodeKosh = new BinaryTreeNodeKosh<int>(10, 9, 11, 12, 7);
+            foreach (var item in koshBinaryTreeNodeKosh)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
             koshBinaryTreeNodeKosh.Add(2);
             bool contBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Contains(4);
             var toArrkoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.ToArray();
@@ -71,7 +177,7 @@ namespace DataStruct.Tests
             int countKoshBinaryTreeNodeKosh = koshBinaryTreeNodeKosh.Root;
             koshBinaryTreeNodeKosh.Clear();
             Console.WriteLine("");
-            ObservableList.OnChange -= MyHandle!;
+            
         }
 
 

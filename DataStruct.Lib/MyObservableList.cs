@@ -1,5 +1,6 @@
 ﻿using Interfaces_List;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -25,7 +26,25 @@ namespace DataStruct.Lib
                 _innerList.Add(item);
             }
         }
-        
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new IndexOutOfRangeException("Індекс виходить за межі масиву.");
+                }
+                return _innerList[index]; // Читання значення за індексом
+            }
+            set
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new IndexOutOfRangeException("Індекс виходить за межі масиву.");
+                }
+                _innerList[index] = value; // Запис значення за індексом
+            }
+        }
         public void Add(T item)
         {
             _innerList.Add(item);
@@ -50,6 +69,49 @@ namespace DataStruct.Lib
         public T[] ToArray() => _innerList.ToArray();
         public int Count => _innerList.Count;
         public void Clear() => _innerList.Clear();
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (int i = 0; i < _innerList.Count; i++)
+            {
+                yield return _innerList[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        //public class MyObservableListEnumerator : IEnumerator<T>
+        //{
+        //    private readonly MyObservableList<T> _innerList;
+        //    private  int _index=-1;
+
+        //    public MyObservableListEnumerator(MyObservableList<T> list)
+        //    {
+        //        this._innerList = list;
+        //    }
+
+        //    public T Current => _innerList[_index];
+
+        //    object IEnumerator.Current => Current;
+
+        //    public void Dispose()
+        //    {
+               
+        //    }
+
+        //    public bool MoveNext()
+        //    {
+        //        _index++;
+        //        return _index < _innerList.Count;
+        //    }
+
+        //    public void Reset()
+        //    {
+        //        _index = -1;
+        //    }
+        //}
     }
     public enum Changes
     {

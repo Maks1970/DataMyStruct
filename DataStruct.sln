@@ -5,9 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStruct.Lib", "DataStruct.Lib\DataStruct.Lib.csproj", "{C75D90FD-C463-4EEF-8150-0EB8D9DB5187}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces_List", "Interfaces_List1\Interfaces_List.csproj", "{571D9EE6-8601-4F18-8CCF-DED2424CC36B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces_List", "Interfaces_List1\Interfaces_List.csproj", "{571D9EE6-8601-4F18-8CCF-DED2424CC36B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{47EE332E-E263-44CD-A7C6-F7BAF3AD8599}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Program", "Program\Program.csproj", "{47EE332E-E263-44CD-A7C6-F7BAF3AD8599}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

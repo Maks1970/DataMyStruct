@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Interfaces_List
 {
-    public interface IMyCollection<T>
+    public interface IMyCollection<T> : IEnumerable<T>
     {
         int Count { get; }
         void Add(T item);
